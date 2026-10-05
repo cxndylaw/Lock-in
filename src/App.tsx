@@ -16,7 +16,10 @@ function App() {
     const savedSession = localStorage.getItem('sessionNumber')
     return savedSession ? parseInt(savedSession) : 1
   })
-  const [isBreak, setIsBreak] = useState(false)
+  const [isBreak, setIsBreak] = useState(() => {
+    const savedBreak = localStorage.getItem('setBreak') 
+    return savedBreak ? JSON.parse(savedBreak) : false
+  })
   const displayedSessionCount = Math.round(sessionCount/2)
   const [sessionType, setSessionType] = useState("Lock in Time!")
   const [isAddingTodo, setIsAddingToDo] = useState(false)
@@ -66,8 +69,28 @@ function App() {
     }
   }
 
+  const playSound = (frequency = 800, duration = 0.5) => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+    const oscillator = audioContext.createOscillator()
+    const gain = audioContext.createGain()
+    
+    oscillator.connect(gain)
+    gain.connect(audioContext.destination)
+    
+    oscillator.frequency.value = frequency
+    oscillator.type = 'sine'
+    gain.gain.setValueAtTime(0.3, audioContext.currentTime)
+    gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration)
+    
+    oscillator.start(audioContext.currentTime)
+    oscillator.stop(audioContext.currentTime + duration)
+  }
+
   //buttons
-  const handleStart = () => setIsRunning(true)
+  const handleStart = () => {
+    playSound(800, 1)  // Quick beep
+    setIsRunning(true)
+  }
   const handlePause = () => setIsRunning(false)
   const handleStop = () =>  {
     setIsRunning(false);
@@ -107,11 +130,15 @@ function App() {
     if(seconds <= 0) {
       setSessionCount(prev => prev+1)
       if((sessionCount+1) % 2 == 0) {
+        playSound(1000, 1.5)
         setIsBreak(true)
+        localStorage.setItem('setBreak', JSON.stringify(true))  // Store the actual boolean
         setSeconds(breakDuration * 60)
       }
       else {
+        playSound(900, 1)
         setIsBreak(false)
+        localStorage.setItem('setBreak', JSON.stringify(false))  // Store the actual boolean
         setSeconds(workDuration * 60)
       }
     }
