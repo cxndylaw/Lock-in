@@ -60,13 +60,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  /* justify-content: center; */
   position: absolute;
   /* background-color: pink; */
   left: 89%;
   transform: translateX(-50%);  /* Centers horizontally */
   top: 18.5%;  /* Adjust this to where the monitor is vertically */
-  width: 30.5vh;
+  width: 17.5vw;
+  height: 36vh;
   padding: 10px;
 }
 
@@ -79,11 +80,18 @@ body {
 }
 
 .todoList ul {
+  width: 16.5vw;
+  text-align: left;
   list-style: circle;
-  padding-left: 20px;
+  padding-left: 30px;
+  text-align: left;
+  /* background-color: pink; */
   margin: 0;
   font-size: 2.2vh;
   word-break: break-all;
+  /* background-color: palegoldenrod; */
+  height: 25vh;
+  overflow-y: auto;
 }
 
 .todoList li {
@@ -96,6 +104,59 @@ body {
   color: white;
   font-size: 2rem;
   cursor: pointer;
+}
+
+.todoList .addTodo {
+  background: #5d7d8e;
+  margin: 10px;
+  border: none;
+  color: white;
+  font-size: 3vh;
+  cursor: pointer;
+  position: relative;
+  padding: 5px 40px;
+  border-radius: 20px;
+}
+
+.todoList .inputTodo input {
+  background: white;
+  border: 1px solid #333;
+  border-radius: 15px;
+  color: #333;
+  margin-right: 7px;
+  font-size: 2vh;
+  outline: none;
+  padding: 8px 4px;
+  width: 13vw;
+}
+
+.todoList .addTodo input::placeholder {
+  color: #999;
+}
+
+.todoList .inputTodo button {
+  background: #5d7d8e;
+  margin: 13.1px 0px;
+  border: none;
+  color: white;
+  padding: 7px;
+  font-size: 2vh;
+  cursor: pointer;
+  position: relative;
+  border-radius: 20px;
+}
+
+.todoList .inputTodo button:hover {
+  background: #555;
+}
+
+.todoList li {
+  cursor: pointer;
+}
+
+.todoList li.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
 }
 
 

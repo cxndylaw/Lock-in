@@ -1,15 +1,8 @@
 import { use, useEffect, useMemo, useState } from 'react'
-import { FaPlay, FaPause, FaStop } from 'react-icons/fa'
+import { FaPlay, FaPause, FaStop, FaPlus } from 'react-icons/fa'
 
 function App() {
-  const todo = [
-    'Revise for humb test',
-    'Miss girbi',
-    'Take muppion on a walk with girbidi girbi <3',
-    'Clean room'
-  ]
 
-  const listTodo = todo.map(todo => <li>{todo}</li>)
   const [workDuration, setWorkDuration] = useState(25)  // minutes
   const [breakDuration, setBreakDuration] = useState(5)  // minutes
 
@@ -26,6 +19,43 @@ function App() {
   const [isBreak, setIsBreak] = useState(false)
   const displayedSessionCount = Math.round(sessionCount/2)
   const [sessionType, setSessionType] = useState("Lock in Time!")
+  const [isAddingTodo, setIsAddingToDo] = useState(false)
+  const [todos, setTodos] = useState(() => {
+    const saved = localStorage.getItem('todos')
+    return saved ? JSON.parse(saved) : []
+  })
+  
+  const handleDeleteTodo = (id) => {
+    setTodos(todos.filter(todo => todo.id !== id))
+  }
+
+  const listTodo = todos.map(todo => (
+    <li 
+      key={todo.id} 
+      onClick={() => handleToggleTodo(todo.id)}
+      onDoubleClick={() => handleDeleteTodo(todo.id)}
+      className={todo.completed ? 'completed' : ''}
+    >
+      {todo.text}
+    </li>
+  ))
+
+
+  const [inputValue, setInputValue] = useState('')
+
+  const handleToggleTodo = (id) => {
+    setTodos(todos.map(todo => 
+      todo.id === id ? { ...todo, completed: !todo.completed } : todo
+    ))
+  }
+
+  const handleAddTodo = () => {
+    if(inputValue.trim() !== '') {
+      setTodos([...todos, { id: Date.now(), text: inputValue, completed: false }])
+      setInputValue('')
+      setIsAddingToDo(false)
+    }
+  }
 
   //buttons
   const handleStart = () => setIsRunning(true)
@@ -36,6 +66,10 @@ function App() {
     setSessionCount(1)
     //todo finish session screen
   }
+
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
   useEffect(() => {
     if(isBreak) {
@@ -116,6 +150,16 @@ function App() {
       <section className='todoList'>
         <p className='title'>To-do List</p>
         <ul>{listTodo}</ul>
+        <div >
+          {isAddingTodo ? (
+            <div className='inputTodo'>
+              <input value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
+              <button onClick={handleAddTodo}>Add</button>
+            </div>
+          ) : (
+            <button className='addTodo' onClick={() => setIsAddingToDo(true)}>Add new</button>
+          )}
+        </div>
       </section>
     </>
   )
