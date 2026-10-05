@@ -6,15 +6,108 @@ body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-#timer {
+.timer {
   display: flex;
-  background-color: pink;
+  flex-direction: column;
+  color: white;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);  /* Centers horizontally */
+  top: 11.4%;  /* Adjust this to where the monitor is vertically */
+  width: 55.6vw;
+  height: 63.5vh;
+}
+
+.timer.paused {
+  background: black;
+  animation: none;
+}
+
+.timer.running {
+  background: linear-gradient(-45deg, #070228, #192578, #293fcb);
+  background-size: 400% 400%;
+  animation: gradient-move 15s ease infinite;
+}
+
+.timerText {
+  text-align: center;
+}
+
+.time {
+  font-size: 25vh;
+  margin: 0;
+}
+
+.sessionType {
+  margin: 0;
+}
+
+.sessionCount {
+  margin: 0;
+}
+
+.timerButtons {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.todoList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  /* background-color: pink; */
+  left: 89%;
+  transform: translateX(-50%);  /* Centers horizontally */
+  top: 18.5%;  /* Adjust this to where the monitor is vertically */
+  width: 30.5vh;
+  padding: 10px;
+}
+
+.todoList .title {
+  font-size: 2vw;
+  margin: 0;
+  padding-bottom: 10px;
+  text-decoration: underline;
+  text-underline-offset: 7px;
+}
+
+.todoList ul {
+  list-style: circle;
+  padding-left: 20px;
+  margin: 0;
+  font-size: 2.2vh;
+  word-break: break-all;
+}
+
+.todoList li {
+  padding: 4px;
+}
+
+.timerButtons button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+
+/* 4. Define how the background moves */
+@keyframes gradient-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
