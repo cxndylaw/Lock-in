@@ -24,7 +24,7 @@ function App() {
     const saved = localStorage.getItem('todos')
     return saved ? JSON.parse(saved) : []
   })
-  
+
   const handleDeleteTodo = (id) => {
     setTodos(todos.filter(todo => todo.id !== id))
   }
@@ -50,8 +50,17 @@ function App() {
   }
 
   const handleAddTodo = () => {
-    if(inputValue.trim() !== '') {
-      setTodos([...todos, { id: Date.now(), text: inputValue, completed: false }])
+    const lines = inputValue.trim().split('\n')
+    const newTodos = lines
+      .filter(line => line.trim() !== '')
+      .map(line => ({ 
+        id: Date.now() + Math.random(), 
+        text: line.trim(), 
+        completed: false 
+      }))
+    
+    if(newTodos.length > 0) {
+      setTodos([...todos, ...newTodos])
       setInputValue('')
       setIsAddingToDo(false)
     }
@@ -153,7 +162,16 @@ function App() {
         <div >
           {isAddingTodo ? (
             <div className='inputTodo'>
-              <input value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
+              <textarea 
+                value={inputValue} 
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if(e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    handleAddTodo()
+                  }
+                }}
+              />
               <button onClick={handleAddTodo}>Add</button>
             </div>
           ) : (

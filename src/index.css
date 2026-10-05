@@ -118,20 +118,21 @@ body {
   border-radius: 20px;
 }
 
-.todoList .inputTodo input {
+.todoList .inputTodo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.todoList .inputTodo textarea {
   background: white;
   border: 1px solid #333;
-  border-radius: 15px;
+  border-radius: 5px;
   color: #333;
   margin-right: 7px;
   font-size: 2vh;
   outline: none;
-  padding: 8px 4px;
   width: 13vw;
-}
-
-.todoList .addTodo input::placeholder {
-  color: #999;
 }
 
 .todoList .inputTodo button {
