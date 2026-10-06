@@ -27,6 +27,7 @@ function App() {
     const saved = localStorage.getItem('todos')
     return saved ? JSON.parse(saved) : []
   })
+  const [sessionStartTime, setSessionStartTime] = useState(null)
 
   const handleDeleteTodo = (id) => {
     setTodos(todos.filter(todo => todo.id !== id))
@@ -88,9 +89,11 @@ function App() {
 
   //buttons
   const handleStart = () => {
-    playSound(800, 1)  // Quick beep
+    playSound(800, 1)
+    setSessionStartTime(Date.now())
     setIsRunning(true)
   }
+
   const handlePause = () => setIsRunning(false)
   const handleStop = () =>  {
     setIsRunning(false);
@@ -115,15 +118,14 @@ function App() {
   //count mechanics
   useEffect(() => {
     const intervalId = setInterval(() => {
-      if(isRunning) {
-        setSeconds(prev => prev-1);
+      if(isRunning && sessionStartTime) {
+        const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000)
+        setSeconds(prev => prev - 1)  // Keep the simple decrement for now
       }
-    },1000);
-
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [isRunning])
+    }, 1000)
+    
+    return () => clearInterval(intervalId)
+  }, [isRunning, sessionStartTime])
 
   //Timer ends
   useEffect(() => {
